@@ -9,7 +9,7 @@ data_path = "./data"
 advbox_path = os.path.join(data_path, "AdvBox")
 temp_path = "./temp"
 extracao_backup_path = os.path.join(data_path, "extracao_backup")  # Caminho para extração
-output_path = "./output"
+output_path = "./data/processado"
 
 # Criação dos diretórios necessários
 os.makedirs(temp_path, exist_ok=True)
