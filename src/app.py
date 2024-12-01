@@ -8,11 +8,13 @@ import shutil
 data_path = "./data"
 advbox_path = os.path.join(data_path, "AdvBox")
 temp_path = "./temp"
+extracao_backup_path = os.path.join(data_path, "extracao_backup")  # Caminho para extração
 output_path = "./output"
 
 # Criação dos diretórios necessários
 os.makedirs(temp_path, exist_ok=True)
 os.makedirs(output_path, exist_ok=True)
+os.makedirs(extracao_backup_path, exist_ok=True)
 
 # Função para processar os dados
 def process_data(input_file, modelo_file, output_file):
@@ -23,25 +25,31 @@ def process_data(input_file, modelo_file, output_file):
     # Padronizar os dados conforme o modelo
     colunas_necessarias = modelo_df.columns
     output_df = input_df.reindex(columns=colunas_necessarias, fill_value="")
-    
+
     # Formatar datas no formato DD/MM/AAAA
     for col in output_df.select_dtypes(include=["datetime"]):
         output_df[col] = output_df[col].dt.strftime("%d/%m/%Y")
-    
+
     # Salvar o arquivo processado
     output_df.to_excel(output_file, index=False)
 
 # Função para extrair arquivos do RAR
 def extract_rar(rar_path, extract_to):
-    with rarfile.RarFile(rar_path, "r") as rf:
-        rf.extractall(extract_to)
-        return rf.namelist()  # Retorna a lista de arquivos extraídos
+    try:
+        with rarfile.RarFile(rar_path, "r") as rf:
+            st.info(f"Extraindo arquivos para: {extract_to}")
+            rf.extractall(extract_to)  # Extração
+            extracted_files = rf.namelist()  # Lista de arquivos extraídos
+            return extracted_files
+    except Exception as e:
+        st.error(f"Erro ao extrair arquivos: {e}")
+        return []
 
 # Interface com Streamlit
 st.set_page_config(page_title="Migração AdvBox", layout="wide")
 st.title("Sistema de Migração AdvBox")
 
-st.markdown("""
+st.markdown("""  
 **Regras de negócio:**  
 1. Faça o upload do arquivo compactado `.rar` (Backup de Dados).  
 2. Os arquivos CLIENTES.xlsx e PROCESSOS.xlsx serão carregados automaticamente do diretório `data/AdvBox`.  
@@ -73,9 +81,8 @@ if st.button("Processar Dados"):
             
             # Extrair os arquivos do RAR
             st.info("Extraindo arquivos do backup...")
-            staged_files = extract_rar(rar_path, temp_path)
-            st.write("Arquivos extraídos:", staged_files)
-
+            staged_files = extract_rar(rar_path, extracao_backup_path)  # Alteração no caminho de extração
+           
             # Caminhos de saída
             clientes_output_path = os.path.join(output_path, "CLIENTES_TRATADOS.xlsx")
             processos_output_path = os.path.join(output_path, "PROCESSOS_TRATADOS.xlsx")
