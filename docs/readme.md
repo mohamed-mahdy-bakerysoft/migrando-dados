@@ -34,5 +34,3 @@ Assim, elabore um código computacional, em linguagem de programação Python, q
 Após, também via linguagem Python, realize o tratamento dos dados obtidos (saneamento, estruturação, formatação, padronização, ...) de acordo com o tipo de cada tabela modelo da XPTO. A ideia é realizar esse tratamento para que o Escritório tenha a melhor experiência possível com a migração.
 
 Por fim, desenvolva uma interface de operação, por mais simples que seja, porém precisa ser intuitiva, para que o operador possa subir a base do Backup e obter, ao final da execução do código, o download dos arquivos já no modelo de tabelas XPTO com todos os dados de Clientes e Processos correspondentes ao Escritório 92577.
-
-
