@@ -6,7 +6,7 @@ import shutil
 
 # Configuração de caminhos
 data_path = "./data"
-advbox_path = os.path.join(data_path, "AdvBox")
+XPTO_path = os.path.join(data_path, "XPTO")
 temp_path = "./temp"
 extracao_backup_path = os.path.join(data_path, "extracao_backup")  # Caminho para extração
 output_path = "./data/processado"
@@ -46,14 +46,14 @@ def extract_rar(rar_path, extract_to):
         return []
 
 # Interface com Streamlit
-st.set_page_config(page_title="Migração AdvBox", layout="wide")
-st.title("Sistema de Migração AdvBox")
+st.set_page_config(page_title="Migração XPTO", layout="wide")
+st.title("Sistema de Migração XPTO")
 
 st.markdown("""  
 **Regras de negócio:**  
 1. Faça o upload do arquivo compactado `.rar` (Backup de Dados).  
-2. Os arquivos CLIENTES.xlsx e PROCESSOS.xlsx serão carregados automaticamente do diretório `data/AdvBox`.  
-3. O modelo padrão AdvBox será carregado automaticamente do diretório `data/AdvBox`.  
+2. Os arquivos CLIENTES.xlsx e PROCESSOS.xlsx serão carregados automaticamente do diretório `data/XPTO`.  
+3. O modelo padrão XPTO será carregado automaticamente do diretório `data/XPTO`.  
 """)
 
 # Upload do arquivo RAR
@@ -62,17 +62,17 @@ uploaded_rar = st.file_uploader("Upload do arquivo RAR (Backup de Dados)", type=
 if st.button("Processar Dados"):
     try:
         # Verificar os arquivos CLIENTES, PROCESSOS e o modelo
-        clientes_path = os.path.join(advbox_path, "CLIENTES.xlsx")
-        processos_path = os.path.join(advbox_path, "PROCESSOS.xlsx")
-        modelo_path = os.path.join(advbox_path, "MIGRAÇÃO PADRÕES NOVO.xlsx")
+        clientes_path = os.path.join(XPTO_path, "CLIENTES.xlsx")
+        processos_path = os.path.join(XPTO_path, "PROCESSOS.xlsx")
+        modelo_path = os.path.join(XPTO_path, "MIGRAÇÃO PADRÕES NOVO.xlsx")
 
         # Validar existência dos arquivos locais
         if not os.path.exists(clientes_path):
-            st.error(f"Arquivo CLIENTES.xlsx não encontrado em {advbox_path}.")
+            st.error(f"Arquivo CLIENTES.xlsx não encontrado em {XPTO_path}.")
         elif not os.path.exists(processos_path):
-            st.error(f"Arquivo PROCESSOS.xlsx não encontrado em {advbox_path}.")
+            st.error(f"Arquivo PROCESSOS.xlsx não encontrado em {XPTO_path}.")
         elif not os.path.exists(modelo_path):
-            st.error(f"Modelo MIGRAÇÃO PADRÕES NOVO.xlsx não encontrado em {advbox_path}.")
+            st.error(f"Modelo MIGRAÇÃO PADRÕES NOVO.xlsx não encontrado em {XPTO_path}.")
         else:
             # Salvar o arquivo RAR carregado
             rar_path = os.path.join(temp_path, "Backup_de_dados.rar")
